@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { User, BookOpen, ShieldCheck } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -19,7 +18,6 @@ const LoginForm = () => {
     password: "",
   });
   const [userType, setUserType] = useState<"student" | "teacher">("student");
-  const [isSignUp, setIsSignUp] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -42,18 +40,10 @@ const LoginForm = () => {
     }
 
     // Mock authentication - in a real app, this would call an API
-    // For demo purposes, we'll just navigate to the dashboard
-    if (isSignUp) {
-      toast({
-        title: "Account created",
-        description: `You have successfully registered as a ${userType}`,
-      });
-    } else {
-      toast({
-        title: "Welcome back!",
-        description: `You have successfully logged in as a ${userType}`,
-      });
-    }
+    toast({
+      title: "Welcome back!",
+      description: `You have successfully logged in as a ${userType}`,
+    });
 
     // Navigate to the appropriate dashboard based on user type
     navigate(`/${userType}-dashboard`);
@@ -73,126 +63,56 @@ const LoginForm = () => {
         </CardHeader>
         
         <CardContent className="pt-6">
-          <Tabs defaultValue="login" className="w-full" onValueChange={(value) => setIsSignUp(value === "signup")}>
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="login">Login</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="login">
-              <form onSubmit={handleSubmit}>
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Input
-                      type="email"
-                      name="email"
-                      placeholder="Email"
-                      value={credentials.email}
-                      onChange={handleInputChange}
-                      className="w-full p-3"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Input
-                      type="password"
-                      name="password"
-                      placeholder="Password"
-                      value={credentials.password}
-                      onChange={handleInputChange}
-                      className="w-full p-3"
-                    />
-                  </div>
-                  
-                  <div className="pt-2 flex justify-between gap-4">
-                    <Button 
-                      type="button" 
-                      className={`flex-1 py-6 ${userType === 'student' ? 'bg-attendance-primary text-white' : 'bg-gray-200 text-gray-700'}`}
-                      onClick={() => setUserType("student")}
-                    >
-                      <BookOpen className="mr-2 h-5 w-5" />
-                      Student
-                    </Button>
-                    <Button 
-                      type="button" 
-                      className={`flex-1 py-6 ${userType === 'teacher' ? 'bg-attendance-primary text-white' : 'bg-gray-200 text-gray-700'}`}
-                      onClick={() => setUserType("teacher")}
-                    >
-                      <User className="mr-2 h-5 w-5" />
-                      Teacher
-                    </Button>
-                  </div>
-                </div>
-                
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={credentials.email}
+                  onChange={handleInputChange}
+                  className="w-full p-3"
+                />
+              </div>
+              <div className="space-y-2">
+                <Input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={credentials.password}
+                  onChange={handleInputChange}
+                  className="w-full p-3"
+                />
+              </div>
+              
+              <div className="pt-2 flex justify-between gap-4">
                 <Button 
-                  type="submit" 
-                  className="w-full mt-6 py-6 bg-attendance-secondary hover:bg-attendance-secondary/90 text-white"
+                  type="button" 
+                  className={`flex-1 py-6 ${userType === 'student' ? 'bg-attendance-primary text-white' : 'bg-gray-200 text-gray-700'}`}
+                  onClick={() => setUserType("student")}
                 >
-                  Login
+                  <BookOpen className="mr-2 h-5 w-5" />
+                  Student
                 </Button>
-              </form>
-            </TabsContent>
-            
-            <TabsContent value="signup">
-              <form onSubmit={handleSubmit}>
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Input
-                      type="text"
-                      name="name"
-                      placeholder="Full Name"
-                      className="w-full p-3"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Input
-                      type="email"
-                      name="email"
-                      placeholder="Email"
-                      value={credentials.email}
-                      onChange={handleInputChange}
-                      className="w-full p-3"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Input
-                      type="password"
-                      name="password"
-                      placeholder="Password"
-                      value={credentials.password}
-                      onChange={handleInputChange}
-                      className="w-full p-3"
-                    />
-                  </div>
-                  
-                  <div className="pt-2 flex justify-between gap-4">
-                    <Button 
-                      type="button" 
-                      className={`flex-1 py-6 ${userType === 'student' ? 'bg-attendance-primary text-white' : 'bg-gray-200 text-gray-700'}`}
-                      onClick={() => setUserType("student")}
-                    >
-                      <BookOpen className="mr-2 h-5 w-5" />
-                      Student
-                    </Button>
-                    <Button 
-                      type="button" 
-                      className={`flex-1 py-6 ${userType === 'teacher' ? 'bg-attendance-primary text-white' : 'bg-gray-200 text-gray-700'}`}
-                      onClick={() => setUserType("teacher")}
-                    >
-                      <User className="mr-2 h-5 w-5" />
-                      Teacher
-                    </Button>
-                  </div>
-                </div>
-                
                 <Button 
-                  type="submit" 
-                  className="w-full mt-6 py-6 bg-attendance-secondary hover:bg-attendance-secondary/90 text-white"
+                  type="button" 
+                  className={`flex-1 py-6 ${userType === 'teacher' ? 'bg-attendance-primary text-white' : 'bg-gray-200 text-gray-700'}`}
+                  onClick={() => setUserType("teacher")}
                 >
-                  Sign Up
+                  <User className="mr-2 h-5 w-5" />
+                  Teacher
                 </Button>
-              </form>
-            </TabsContent>
-          </Tabs>
+              </div>
+            </div>
+            
+            <Button 
+              type="submit" 
+              className="w-full mt-6 py-6 bg-attendance-secondary hover:bg-attendance-secondary/90 text-white"
+            >
+              Login
+            </Button>
+          </form>
         </CardContent>
         
         <CardFooter className="flex justify-center p-4 text-center text-sm text-gray-500">
