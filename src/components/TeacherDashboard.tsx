@@ -145,8 +145,14 @@ const TeacherDashboard = () => {
                   <CheckCircle className="h-5 w-5 mr-2" />
                   Current Class Attendance
                 </CardTitle>
-                <div className="mt-2">
-                  <Input icon={Search} placeholder="Search students..." />
+                <div className="mt-2 relative">
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input 
+                      placeholder="Search students..." 
+                      className="pl-8" 
+                    />
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
