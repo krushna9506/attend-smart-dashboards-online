@@ -4,7 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
   Calendar, Clock, CheckCircle, XCircle, BarChart, BookOpen, 
-  LogOut, Scan, Camera, Wifi, WifiOff, MapPin, TrendingUp, Zap
+  LogOut, Scan, Camera, Wifi, WifiOff, MapPin, TrendingUp, Zap,
+  ChevronRight, Award, Star, Bell, Check
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -100,7 +101,8 @@ const StudentDashboard = () => {
     { name: "English", value: 82 },
   ];
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+  // More vibrant colors
+  const COLORS = ['#4f46e5', '#06b6d4', '#f59e0b', '#10b981'];
 
   const handleScanQR = () => {
     if (qrScanned < 3) {
@@ -168,13 +170,13 @@ const StudentDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-4 md:p-6 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden z-0">
         {[...Array(6)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-attendance-primary/5"
+            className="absolute rounded-full bg-indigo-500/5"
             style={{
               width: Math.random() * 300 + 100,
               height: Math.random() * 300 + 100,
@@ -201,7 +203,7 @@ const StudentDashboard = () => {
       <AnimatePresence>
         {showWelcome && (
           <motion.div 
-            className="fixed inset-0 flex items-center justify-center bg-attendance-primary/90 z-50"
+            className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-indigo-600 to-purple-700 z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -214,8 +216,18 @@ const StudentDashboard = () => {
               exit={{ scale: 1.2, opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <h1 className="text-4xl font-bold mb-2">Welcome back, Alex</h1>
-              <p className="text-xl">Your attendance is looking great today!</p>
+              <div className="flex flex-col items-center">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: [0, 1.2, 1] }}
+                  transition={{ duration: 0.5, times: [0, 0.8, 1] }}
+                  className="mb-4"
+                >
+                  <Star className="h-16 w-16 text-yellow-300" />
+                </motion.div>
+                <h1 className="text-4xl font-bold mb-2">Welcome back, Alex</h1>
+                <p className="text-xl">Your attendance is looking great today!</p>
+              </div>
             </motion.div>
           </motion.div>
         )}
@@ -229,13 +241,16 @@ const StudentDashboard = () => {
           transition={{ duration: 0.5 }}
         >
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Student Dashboard</h1>
+            <h1 className="text-3xl font-bold text-gray-800 flex items-center">
+              <Award className="h-7 w-7 text-indigo-600 mr-2" />
+              Student Dashboard
+            </h1>
             <p className="text-gray-600">Welcome back, Alex Johnson</p>
           </div>
           <Button 
             variant="outline" 
             onClick={handleLogout} 
-            className="flex items-center gap-2 hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors"
+            className="flex items-center gap-2 hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors shadow-sm"
           >
             <LogOut className="h-4 w-4" />
             Logout
@@ -249,16 +264,16 @@ const StudentDashboard = () => {
           animate="visible"
         >
           <motion.div variants={itemVariants}>
-            <Card className="overflow-hidden border-t-4 border-t-attendance-secondary hover:shadow-md transition-shadow">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-500">Attendance Rate</CardTitle>
+            <Card className="border-0 shadow-lg bg-gradient-to-br from-indigo-50 to-white rounded-xl overflow-hidden">
+              <CardHeader className="pb-2 border-b border-indigo-100">
+                <CardTitle className="text-sm font-medium text-indigo-700">Attendance Rate</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-4">
                 <div className="flex items-center">
                   <div className="relative">
                     <svg className="w-16 h-16">
                       <circle 
-                        className="text-gray-200" 
+                        className="text-indigo-100" 
                         strokeWidth="5" 
                         stroke="currentColor" 
                         fill="transparent" 
@@ -267,7 +282,7 @@ const StudentDashboard = () => {
                         cy="32" 
                       />
                       <motion.circle 
-                        className="text-attendance-secondary" 
+                        className="text-indigo-600" 
                         strokeWidth="5" 
                         strokeLinecap="round" 
                         stroke="currentColor" 
@@ -282,7 +297,7 @@ const StudentDashboard = () => {
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center">
                       <motion.span 
-                        className="text-lg font-bold"
+                        className="text-lg font-bold text-indigo-700"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 1 }}
@@ -306,25 +321,25 @@ const StudentDashboard = () => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <Card className="overflow-hidden border-t-4 border-t-attendance-primary hover:shadow-md transition-shadow">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-500">Next Class</CardTitle>
+            <Card className="border-0 shadow-lg bg-gradient-to-br from-purple-50 to-white rounded-xl overflow-hidden">
+              <CardHeader className="pb-2 border-b border-purple-100">
+                <CardTitle className="text-sm font-medium text-purple-700">Next Class</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-4">
                 <div className="flex items-center">
-                  <div className="bg-attendance-primary/10 p-2 rounded-full">
-                    <BookOpen className="h-5 w-5 text-attendance-primary" />
+                  <div className="bg-gradient-to-br from-purple-400 to-indigo-500 p-2.5 rounded-lg shadow-md">
+                    <BookOpen className="h-5 w-5 text-white" />
                   </div>
                   <div className="ml-3">
                     <div className="flex items-center">
-                      <div className="text-lg font-medium">{upcomingClasses[0].name}</div>
+                      <div className="text-lg font-medium text-gray-800">{upcomingClasses[0].name}</div>
                       {upcomingClasses[0].mode === "online" ? (
-                        <Badge className="ml-2 bg-blue-500">
+                        <Badge className="ml-2 bg-blue-500 shadow-sm">
                           <Wifi className="h-3 w-3 mr-1" />
                           Online
                         </Badge>
                       ) : (
-                        <Badge className="ml-2 bg-green-500">
+                        <Badge className="ml-2 bg-green-500 shadow-sm">
                           <MapPin className="h-3 w-3 mr-1" />
                           Offline
                         </Badge>
@@ -344,13 +359,13 @@ const StudentDashboard = () => {
                 </div>
                 
                 <motion.div 
-                  className="w-full h-1 bg-gray-100 mt-3 rounded-full overflow-hidden"
+                  className="w-full h-1.5 bg-gray-100 mt-3 rounded-full overflow-hidden"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1 }}
                 >
                   <motion.div 
-                    className="h-full bg-attendance-primary rounded-full"
+                    className="h-full bg-purple-500 rounded-full"
                     initial={{ width: 0 }}
                     animate={{ width: "60%" }}
                     transition={{ duration: 2, delay: 1.2 }}
@@ -362,17 +377,17 @@ const StudentDashboard = () => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <Card className="overflow-hidden border-t-4 border-t-blue-500 hover:shadow-md transition-shadow">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-500">Today's Check-in</CardTitle>
+            <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-50 to-white rounded-xl overflow-hidden">
+              <CardHeader className="pb-2 border-b border-blue-100">
+                <CardTitle className="text-sm font-medium text-blue-700">Today's Check-in</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-4">
                 <Button 
                   onClick={handleCheckIn}
-                  className={`w-full relative overflow-hidden group ${
+                  className={`w-full relative overflow-hidden shadow-lg ${
                     isCheckedIn 
                       ? 'bg-red-500 hover:bg-red-600' 
-                      : 'bg-attendance-secondary hover:bg-attendance-secondary/90'
+                      : 'bg-blue-600 hover:bg-blue-700'
                   }`}
                   disabled={
                     (upcomingClasses[0].mode === "online" && qrScanned < 3) || 
@@ -401,6 +416,17 @@ const StudentDashboard = () => {
                   <Zap className="h-4 w-4 mr-1 text-yellow-500" />
                   {isCheckedIn ? "Checked in at 8:45 AM" : "Not checked in yet"}
                 </div>
+
+                {isCheckedIn && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-2 p-2 bg-green-50 border border-green-100 rounded-lg text-green-700 text-xs flex items-center justify-center"
+                  >
+                    <Check className="h-3 w-3 mr-1" />
+                    Attendance successfully recorded
+                  </motion.div>
+                )}
               </CardContent>
             </Card>
           </motion.div>
@@ -412,11 +438,13 @@ const StudentDashboard = () => {
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-            <TabsList className="grid w-full grid-cols-2 rounded-lg p-1 bg-gray-100">
-              <TabsTrigger value="attendance" className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm">
+            <TabsList className="grid w-full grid-cols-2 rounded-lg p-1 bg-indigo-50 shadow-inner">
+              <TabsTrigger value="attendance" className="rounded-md font-medium data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-indigo-700">
+                <Clock className="h-4 w-4 mr-1.5" />
                 Attendance Verification
               </TabsTrigger>
-              <TabsTrigger value="data" className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm">
+              <TabsTrigger value="data" className="rounded-md font-medium data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-indigo-700">
+                <BarChart className="h-4 w-4 mr-1.5" />
                 Personal Data Log
               </TabsTrigger>
             </TabsList>
@@ -430,63 +458,66 @@ const StudentDashboard = () => {
                   exit={{ opacity: 0, x: 20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Card className="overflow-hidden hover:shadow-md transition-shadow">
-                    <CardHeader>
-                      <CardTitle className="flex items-center">
-                        <CheckCircle className="h-5 w-5 mr-2" />
+                  <Card className="border-0 shadow-lg bg-white rounded-xl overflow-hidden">
+                    <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 border-b border-indigo-100">
+                      <CardTitle className="flex items-center text-indigo-800">
+                        <CheckCircle className="h-5 w-5 mr-2 text-indigo-600" />
                         Attendance Verification
                       </CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="p-5">
                       <div className="space-y-6">
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between bg-indigo-50/50 p-3 rounded-xl border border-indigo-100">
                           <div>
-                            <h3 className="font-semibold">{upcomingClasses[0].name}</h3>
-                            <p className="text-sm text-gray-500">
-                              {upcomingClasses[0].mode === "online" ? "Online Class" : `Room ${upcomingClasses[0].room}`}
+                            <h3 className="font-semibold text-gray-800">{upcomingClasses[0].name}</h3>
+                            <p className="text-sm text-gray-600 flex items-center">
+                              {upcomingClasses[0].mode === "online" ? (
+                                <>
+                                  <Wifi className="h-3 w-3 mr-1 text-blue-500" />
+                                  Online Class
+                                </>
+                              ) : (
+                                <>
+                                  <MapPin className="h-3 w-3 mr-1 text-green-500" />
+                                  Room {upcomingClasses[0].room}
+                                </>
+                              )}
                             </p>
                           </div>
-                          <Badge className={upcomingClasses[0].mode === "online" ? "bg-blue-500" : "bg-green-500"}>
-                            {upcomingClasses[0].mode === "online" ? (
-                              <>
-                                <Wifi className="h-3 w-3 mr-1" />
-                                Online
-                              </>
-                            ) : (
-                              <>
-                                <MapPin className="h-3 w-3 mr-1" />
-                                Offline
-                              </>
-                            )}
+                          <Badge className={upcomingClasses[0].mode === "online" ? 
+                            "bg-gradient-to-r from-blue-500 to-blue-600 shadow-md" : 
+                            "bg-gradient-to-r from-green-500 to-green-600 shadow-md"}
+                          >
+                            {upcomingClasses[0].time}
                           </Badge>
                         </div>
                         
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <motion.div 
-                            className="p-4 border rounded-lg hover:border-attendance-primary/50 hover:shadow-sm transition-all"
-                            whileHover={{ scale: 1.02 }}
+                            className="p-5 border border-blue-200 rounded-xl hover:border-blue-400 hover:shadow-md transition-all bg-gradient-to-br from-blue-50/50 to-white"
+                            whileHover={{ scale: 1.02, y: -5 }}
                             transition={{ type: "spring", stiffness: 300 }}
                           >
-                            <h3 className="font-semibold flex items-center mb-3">
-                              <Scan className="h-4 w-4 mr-2" />
+                            <h3 className="font-semibold flex items-center mb-3 text-blue-800">
+                              <Scan className="h-4 w-4 mr-2 text-blue-600" />
                               QR Code Verification
                             </h3>
                             
                             {upcomingClasses[0].mode === "online" ? (
                               <div>
-                                <p className="text-sm text-gray-500 mb-3">
+                                <p className="text-sm text-gray-600 mb-3">
                                   Scan all 3 QR codes generated by your teacher to verify attendance.
                                 </p>
                                 <div className="flex items-center space-x-4 mb-3 justify-center">
                                   {[1, 2, 3].map((step) => (
                                     <motion.div 
                                       key={step}
-                                      className={`h-3 w-3 rounded-full ${
-                                        qrScanned >= step ? 'bg-green-500' : 'bg-gray-300'
+                                      className={`h-4 w-4 rounded-full ${
+                                        qrScanned >= step ? 'bg-gradient-to-br from-blue-500 to-indigo-500' : 'bg-gray-200'
                                       }`}
                                       initial={qrScanned >= step ? { scale: 1 } : { scale: 0.8 }}
                                       animate={qrScanned >= step ? 
-                                        { scale: [1, 1.2, 1], backgroundColor: ['#10b981', '#10b981'] } : 
+                                        { scale: [1, 1.2, 1], backgroundColor: ['#4f46e5', '#4f46e5'] } : 
                                         { scale: 0.8 }
                                       }
                                       transition={qrScanned >= step ? 
@@ -498,7 +529,7 @@ const StudentDashboard = () => {
                                 </div>
                                 <Button 
                                   onClick={handleScanQR} 
-                                  className="w-full relative overflow-hidden" 
+                                  className="w-full relative overflow-hidden shadow-md bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600" 
                                   disabled={qrScanned >= 3}
                                 >
                                   <motion.span 
@@ -507,17 +538,19 @@ const StudentDashboard = () => {
                                     whileHover={{ scale: 2, opacity: 0 }}
                                     transition={{ duration: 0.5 }}
                                   />
-                                  Scan QR Code {qrScanned < 3 ? qrScanned + 1 : 'Complete'} 
+                                  <span className="relative z-10">
+                                    {qrScanned < 3 ? `Scan QR Code ${qrScanned + 1}` : 'Complete'} 
+                                  </span>
                                 </Button>
                               </div>
                             ) : (
                               <div>
-                                <p className="text-sm text-gray-500 mb-3">
+                                <p className="text-sm text-gray-600 mb-3">
                                   Scan the QR code displayed in class to verify your attendance.
                                 </p>
                                 <Button 
                                   onClick={handleScanQR} 
-                                  className="w-full relative overflow-hidden" 
+                                  className="w-full relative overflow-hidden shadow-md" 
                                   disabled={qrScanned > 0}
                                   variant={qrScanned > 0 ? "outline" : "default"}
                                 >
@@ -545,20 +578,20 @@ const StudentDashboard = () => {
                           
                           {upcomingClasses[0].mode === "offline" && (
                             <motion.div 
-                              className="p-4 border rounded-lg hover:border-attendance-primary/50 hover:shadow-sm transition-all"
-                              whileHover={{ scale: 1.02 }}
+                              className="p-5 border border-purple-200 rounded-xl hover:border-purple-400 hover:shadow-md transition-all bg-gradient-to-br from-purple-50/50 to-white"
+                              whileHover={{ scale: 1.02, y: -5 }}
                               transition={{ type: "spring", stiffness: 300 }}
                             >
-                              <h3 className="font-semibold flex items-center mb-3">
-                                <Camera className="h-4 w-4 mr-2" />
+                              <h3 className="font-semibold flex items-center mb-3 text-purple-800">
+                                <Camera className="h-4 w-4 mr-2 text-purple-600" />
                                 Face Recognition
                               </h3>
-                              <p className="text-sm text-gray-500 mb-3">
+                              <p className="text-sm text-gray-600 mb-3">
                                 Your location will be verified to ensure you are within 50 meters of the class.
                               </p>
                               <Button 
                                 onClick={handleFaceVerification} 
-                                className="w-full relative overflow-hidden"
+                                className="w-full relative overflow-hidden shadow-md bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600"
                                 disabled={faceVerified || !qrScanned}
                                 variant={faceVerified ? "outline" : "default"}
                               >
@@ -568,17 +601,19 @@ const StudentDashboard = () => {
                                   whileHover={{ scale: 2, opacity: 0 }}
                                   transition={{ duration: 0.5 }}
                                 />
-                                {faceVerified ? (
-                                  <motion.span 
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 0.3 }}
-                                    className="flex items-center"
-                                  >
-                                    <CheckCircle className="h-4 w-4 mr-1 text-green-500" />
-                                    Face Verified
-                                  </motion.span>
-                                ) : "Verify Face"}
+                                <span className="relative z-10">
+                                  {faceVerified ? (
+                                    <motion.span 
+                                      initial={{ opacity: 0 }}
+                                      animate={{ opacity: 1 }}
+                                      transition={{ duration: 0.3 }}
+                                      className="flex items-center"
+                                    >
+                                      <CheckCircle className="h-4 w-4 mr-1 text-green-500" />
+                                      Face Verified
+                                    </motion.span>
+                                  ) : "Verify Face"}
+                                </span>
                               </Button>
                             </motion.div>
                           )}
@@ -587,45 +622,47 @@ const StudentDashboard = () => {
                     </CardContent>
                   </Card>
                   
-                  <Card className="overflow-hidden hover:shadow-md transition-shadow">
-                    <CardHeader>
-                      <CardTitle className="flex items-center">
-                        <Calendar className="h-5 w-5 mr-2" />
+                  <Card className="border-0 shadow-lg bg-white rounded-xl overflow-hidden">
+                    <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50 border-b border-purple-100">
+                      <CardTitle className="flex items-center text-purple-800">
+                        <Calendar className="h-5 w-5 mr-2 text-purple-600" />
                         Upcoming Classes
                       </CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="p-5">
                       <div className="space-y-4">
                         {upcomingClasses.map((cls, index) => (
                           <motion.div 
                             key={cls.id}
-                            className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                            className="flex items-center justify-between p-3.5 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100 hover:border-indigo-200 hover:shadow-md transition-all"
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.2 }}
-                            whileHover={{ x: 5 }}
+                            whileHover={{ x: 5, borderColor: "#c7d2fe" }}
                           >
-                            <div>
-                              <h3 className="font-medium">{cls.name}</h3>
-                              <div className="text-sm text-gray-500">
-                                {cls.mode === "offline" ? `Room ${cls.room}` : "Online Class"}
+                            <div className="flex items-center">
+                              <div className={`p-2.5 rounded-lg mr-3 shadow-md ${cls.mode === "online" ? "bg-gradient-to-br from-blue-400 to-blue-500" : "bg-gradient-to-br from-green-400 to-green-500"}`}>
+                                {cls.mode === "online" ? 
+                                  <Wifi className="h-4 w-4 text-white" /> : 
+                                  <MapPin className="h-4 w-4 text-white" />
+                                }
+                              </div>
+                              <div>
+                                <h3 className="font-medium flex items-center text-gray-800">
+                                  {cls.name}
+                                  <ChevronRight className="h-4 w-4 ml-1 text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </h3>
+                                <div className="text-sm text-gray-500">
+                                  {cls.mode === "offline" ? `Room ${cls.room}` : "Online Class"}
+                                </div>
                               </div>
                             </div>
                             <div className="flex items-center">
-                              <div className="text-sm font-medium mr-2">{cls.time}</div>
-                              <Badge className={cls.mode === "online" ? "bg-blue-500" : "bg-green-500"}>
-                                {cls.mode === "online" ? (
-                                  <>
-                                    <Wifi className="h-3 w-3 mr-1" />
-                                    Online
-                                  </>
-                                ) : (
-                                  <>
-                                    <MapPin className="h-3 w-3 mr-1" />
-                                    Offline
-                                  </>
-                                )}
-                              </Badge>
+                              <div className={`px-3 py-1.5 rounded-lg shadow-sm font-medium text-sm ${
+                                cls.mode === "online" ? 
+                                "bg-blue-100 text-blue-700" : 
+                                "bg-green-100 text-green-700"
+                              }`}>{cls.time}</div>
                             </div>
                           </motion.div>
                         ))}
@@ -645,17 +682,20 @@ const StudentDashboard = () => {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Card className="overflow-hidden hover:shadow-md transition-shadow">
-                    <CardHeader>
-                      <CardTitle className="flex items-center">
-                        <BarChart className="h-5 w-5 mr-2" />
+                  <Card className="border-0 shadow-lg bg-white rounded-xl overflow-hidden">
+                    <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 border-b border-indigo-100">
+                      <CardTitle className="flex items-center text-indigo-800">
+                        <BarChart className="h-5 w-5 mr-2 text-indigo-600" />
                         Attendance Overview
                       </CardTitle>
                     </CardHeader>
-                    <CardContent>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <CardContent className="p-5">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div>
-                          <h3 className="font-medium mb-3 text-gray-700">Attendance Trend</h3>
+                          <h3 className="font-medium mb-3 text-gray-800 text-lg flex items-center">
+                            <TrendingUp className="h-4 w-4 mr-1.5 text-indigo-600" />
+                            Attendance Trend
+                          </h3>
                           <div className="h-[250px]">
                             <ChartContainer
                               config={{
@@ -666,7 +706,7 @@ const StudentDashboard = () => {
                               }}
                             >
                               <AreaChart data={attendanceTrendData}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                                 <XAxis dataKey="name" />
                                 <YAxis domain={[70, 100]} />
                                 <ChartTooltip 
@@ -684,6 +724,7 @@ const StudentDashboard = () => {
                                   type="monotone" 
                                   dataKey="attendance" 
                                   stroke="#8B5CF6" 
+                                  strokeWidth={2}
                                   fillOpacity={1} 
                                   fill="url(#attendanceGradient)" 
                                   animationDuration={1500}
@@ -694,7 +735,10 @@ const StudentDashboard = () => {
                         </div>
                         
                         <div>
-                          <h3 className="font-medium mb-3 text-gray-700">Attendance by Subject</h3>
+                          <h3 className="font-medium mb-3 text-gray-800 text-lg flex items-center">
+                            <PieChart className="h-4 w-4 mr-1.5 text-indigo-600" />
+                            Attendance by Subject
+                          </h3>
                           <div className="h-[250px]">
                             <ResponsiveContainer width="100%" height="100%">
                               <PieChart>
@@ -704,6 +748,7 @@ const StudentDashboard = () => {
                                   cy="50%"
                                   labelLine={false}
                                   outerRadius={80}
+                                  innerRadius={60}
                                   fill="#8884d8"
                                   dataKey="value"
                                   animationDuration={1000}
@@ -723,25 +768,26 @@ const StudentDashboard = () => {
                     </CardContent>
                   </Card>
                   
-                  <Card className="overflow-hidden hover:shadow-md transition-shadow">
-                    <CardHeader>
-                      <CardTitle className="flex items-center">
-                        <BarChart className="h-5 w-5 mr-2" />
+                  <Card className="border-0 shadow-lg bg-white rounded-xl overflow-hidden">
+                    <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+                      <CardTitle className="flex items-center text-blue-800">
+                        <Award className="h-5 w-5 mr-2 text-blue-600" />
                         Attendance by Course
                       </CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="p-5">
                       <div className="space-y-4">
                         {courses.map((course, index) => (
                           <motion.div 
                             key={course.id} 
-                            className="space-y-1"
+                            className="p-3.5 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100 hover:border-blue-200 hover:shadow-md transition-all"
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: index * 0.1 }}
+                            whileHover={{ x: 3, borderColor: "#bfdbfe" }}
                           >
-                            <div className="flex justify-between items-center">
-                              <div className="font-medium flex items-center">
+                            <div className="flex justify-between items-center mb-1">
+                              <div className="font-medium flex items-center text-gray-800">
                                 {course.name}
                                 <Badge className="ml-2" variant="outline">
                                   {course.mode === "online" ? (
@@ -757,11 +803,15 @@ const StudentDashboard = () => {
                                   )}
                                 </Badge>
                               </div>
-                              <div className="text-sm font-medium">{course.attendance}%</div>
+                              <div className="text-sm font-medium bg-blue-100 text-blue-700 px-2 py-0.5 rounded-lg">{course.attendance}%</div>
                             </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                            <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
                               <motion.div 
-                                className="bg-attendance-secondary rounded-full h-2" 
+                                className={`${
+                                  course.attendance > 95 ? 'bg-gradient-to-r from-green-400 to-green-500' : 
+                                  course.attendance > 85 ? 'bg-gradient-to-r from-blue-400 to-blue-500' :
+                                  'bg-gradient-to-r from-amber-400 to-amber-500'
+                                } rounded-full h-2.5`}
                                 initial={{ width: 0 }}
                                 animate={{ width: `${course.attendance}%` }}
                                 transition={{ duration: 1, delay: index * 0.1 }}
@@ -773,37 +823,56 @@ const StudentDashboard = () => {
                     </CardContent>
                   </Card>
                   
-                  <Card className="overflow-hidden hover:shadow-md transition-shadow">
-                    <CardHeader>
-                      <CardTitle className="flex items-center">
-                        <Calendar className="h-5 w-5 mr-2" />
+                  <Card className="border-0 shadow-lg bg-white rounded-xl overflow-hidden">
+                    <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-100">
+                      <CardTitle className="flex items-center text-green-800">
+                        <Calendar className="h-5 w-5 mr-2 text-green-600" />
                         Attendance History
                       </CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="p-5">
                       <div className="space-y-4">
                         {attendanceHistory.map((record, index) => (
                           <motion.div 
                             key={record.id} 
-                            className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                            className="flex items-center justify-between p-3.5 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100 hover:border-green-200 hover:shadow-md transition-all"
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
-                            whileHover={{ x: 5 }}
+                            whileHover={{ x: 5, borderColor: "#bbf7d0" }}
                           >
-                            <div>
-                              <h3 className="font-medium">{record.course}</h3>
-                              <div className="text-sm text-gray-500">{record.date}</div>
+                            <div className="flex items-center">
+                              <div className={`p-2.5 rounded-lg mr-3 shadow-md ${
+                                record.status === "present" ? 
+                                "bg-gradient-to-br from-green-400 to-green-500" : 
+                                "bg-gradient-to-br from-red-400 to-red-500"
+                              }`}>
+                                {record.status === "present" ? 
+                                  <Check className="h-4 w-4 text-white" /> : 
+                                  <XCircle className="h-4 w-4 text-white" />
+                                }
+                              </div>
+                              <div>
+                                <h3 className="font-medium text-gray-800">{record.course}</h3>
+                                <div className="text-sm text-gray-600 flex items-center">
+                                  <Calendar className="h-3 w-3 mr-1" />
+                                  {record.date}
+                                </div>
+                              </div>
                             </div>
                             <div className="flex items-center gap-2">
                               <Badge 
                                 className={
-                                  record.status === "present" ? "bg-green-500" : "bg-red-500"
+                                  record.status === "present" ? 
+                                  "bg-gradient-to-r from-green-500 to-emerald-500 shadow-sm" : 
+                                  "bg-gradient-to-r from-red-500 to-rose-500 shadow-sm"
                                 }
                               >
                                 {record.status}
                               </Badge>
-                              <div className="text-xs text-gray-500">{record.verificationMethod}</div>
+                              <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md">
+                                {record.verificationMethod}
+                              </div>
                             </div>
                           </motion.div>
                         ))}
