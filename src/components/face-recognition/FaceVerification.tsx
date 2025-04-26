@@ -93,10 +93,11 @@ export const FaceVerification = ({ onVerificationComplete }: { onVerificationCom
         storedDescriptor = new Float32Array(faceData.face_encoding.split(',').map(Number));
       } else if (Array.isArray(faceData.face_encoding)) {
         // If it's stored as an array
-        storedDescriptor = new Float32Array(faceData.face_encoding);
+        const numberArray = faceData.face_encoding.map(value => Number(value));
+        storedDescriptor = new Float32Array(numberArray);
       } else if (typeof faceData.face_encoding === 'object' && faceData.face_encoding !== null) {
         // If it's stored as an object with numeric indices (JSON representation of array)
-        const values = Object.values(faceData.face_encoding);
+        const values = Object.values(faceData.face_encoding).map(value => Number(value));
         storedDescriptor = new Float32Array(values);
       } else {
         toast({
@@ -184,4 +185,3 @@ export const FaceVerification = ({ onVerificationComplete }: { onVerificationCom
     </Card>
   );
 };
-
