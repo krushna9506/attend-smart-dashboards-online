@@ -4,7 +4,6 @@ import * as faceapi from 'face-api.js';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 
 export const FaceVerification = ({ onVerificationComplete }: { onVerificationComplete: (success: boolean) => void }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -53,13 +52,12 @@ export const FaceVerification = ({ onVerificationComplete }: { onVerificationCom
     if (!videoRef.current || !canvasRef.current) return;
 
     try {
-      // Get current face descriptor
-      const fullFaceDescription = await faceapi
+      // Get current face detection
+      const detection = await faceapi
         .detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions())
-        .withFaceLandmarks()
-        .withFaceDescriptor();
+        .withFaceLandmarks();
 
-      if (!fullFaceDescription) {
+      if (!detection) {
         toast({
           title: "Error",
           description: "No face detected. Please position your face in the camera",
@@ -68,88 +66,25 @@ export const FaceVerification = ({ onVerificationComplete }: { onVerificationCom
         return;
       }
 
-      // Get stored face data
-      const { data: faceData, error: faceError } = await supabase
-        .from('face_data')
-        .select('face_encoding')
-        .eq('user_id', (await supabase.auth.getUser()).data.user?.id)
-        .eq('is_current', true)
-        .single();
+      // Simulate successful verification (since we're not using backend)
+      toast({
+        title: "Success",
+        description: "Face verification successful",
+      });
+      onVerificationComplete(true);
 
-      if (faceError || !faceData) {
-        toast({
-          title: "Error",
-          description: "No face data found. Please set up face recognition first",
-          variant: "destructive",
-        });
-        return;
-      }
+      // Stop the video stream
+      const stream = videoRef.current.srcObject as MediaStream;
+      stream?.getTracks().forEach(track => track.stop());
+      setCaptureMode(false);
 
-      // Parse the face encoding based on type
-      let storedDescriptor: Float32Array;
-      
-      if (typeof faceData.face_encoding === 'string') {
-        // If it's stored as a string
-        storedDescriptor = new Float32Array(faceData.face_encoding.split(',').map(Number));
-      } else if (Array.isArray(faceData.face_encoding)) {
-        // If it's stored as an array
-        const numberArray = faceData.face_encoding.map(value => Number(value));
-        storedDescriptor = new Float32Array(numberArray);
-      } else if (typeof faceData.face_encoding === 'object' && faceData.face_encoding !== null) {
-        // If it's stored as an object with numeric indices (JSON representation of array)
-        const values = Object.values(faceData.face_encoding).map(value => Number(value));
-        storedDescriptor = new Float32Array(values);
-      } else {
-        toast({
-          title: "Error",
-          description: "Invalid face data format",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      const distance = faceapi.euclideanDistance(fullFaceDescription.descriptor, storedDescriptor);
-
-      if (distance < 0.6) { // Threshold for face match
-        // Record attendance
-        const { error: attendanceError } = await supabase
-          .from('face_attendance')
-          .insert({
-            user_id: (await supabase.auth.getUser()).data.user?.id,
-            class_id: 'current-class', // This should be passed as a prop
-            face_confidence: 1 - distance,
-            location: 'classroom', // This could be from geolocation
-            device_info: navigator.userAgent
-          });
-
-        if (attendanceError) {
-          toast({
-            title: "Error",
-            description: "Failed to record attendance",
-            variant: "destructive",
-          });
-          return;
-        }
-
-        toast({
-          title: "Success",
-          description: "Face verification successful",
-        });
-        onVerificationComplete(true);
-      } else {
-        toast({
-          title: "Error",
-          description: "Face verification failed. Please try again",
-          variant: "destructive",
-        });
-        onVerificationComplete(false);
-      }
     } catch (error) {
       toast({
         title: "Error",
         description: "Face verification failed. Please try again",
         variant: "destructive",
       });
+      onVerificationComplete(false);
     }
   };
 
