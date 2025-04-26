@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { FaceVerification } from "./face-recognition/FaceVerification";
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
@@ -104,6 +104,16 @@ const StudentDashboard = () => {
   // More vibrant colors
   const COLORS = ['#4f46e5', '#06b6d4', '#f59e0b', '#10b981'];
 
+  const handleFaceVerification = (success: boolean) => {
+    if (success) {
+      setIsCheckedIn(true);
+      toast({
+        title: "Checked in",
+        description: "You have successfully checked in using face verification",
+      });
+    }
+  };
+
   const handleScanQR = () => {
     if (qrScanned < 3) {
       setQrScanned(qrScanned + 1);
@@ -116,7 +126,7 @@ const StudentDashboard = () => {
     }
   };
 
-  const handleFaceVerification = () => {
+  const handleFaceVerificationLegacy = () => {
     // Mock face verification
     setFaceVerified(true);
     toast({
@@ -382,50 +392,14 @@ const StudentDashboard = () => {
                 <CardTitle className="text-sm font-medium text-blue-700">Today's Check-in</CardTitle>
               </CardHeader>
               <CardContent className="pt-4">
-                <Button 
-                  onClick={handleCheckIn}
-                  className={`w-full relative overflow-hidden shadow-lg ${
-                    isCheckedIn 
-                      ? 'bg-red-500 hover:bg-red-600' 
-                      : 'bg-blue-600 hover:bg-blue-700'
-                  }`}
-                  disabled={
-                    (upcomingClasses[0].mode === "online" && qrScanned < 3) || 
-                    (upcomingClasses[0].mode === "offline" && (!qrScanned || !faceVerified))
-                  }
-                >
-                  <motion.span 
-                    className="absolute inset-0 bg-white"
-                    initial={{ scale: 0, opacity: 0.5 }}
-                    whileHover={{ scale: 2, opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                  />
-                  {isCheckedIn ? (
-                    <>
-                      <XCircle className="mr-2 h-4 w-4" />
-                      Check Out
-                    </>
-                  ) : (
-                    <>
-                      <CheckCircle className="mr-2 h-4 w-4" />
-                      Check In
-                    </>
-                  )}
-                </Button>
-                <div className="text-sm text-gray-500 mt-2 flex items-center justify-center">
-                  <Zap className="h-4 w-4 mr-1 text-yellow-500" />
-                  {isCheckedIn ? "Checked in at 8:45 AM" : "Not checked in yet"}
-                </div>
-
-                {isCheckedIn && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-2 p-2 bg-green-50 border border-green-100 rounded-lg text-green-700 text-xs flex items-center justify-center"
-                  >
-                    <Check className="h-3 w-3 mr-1" />
-                    Attendance successfully recorded
-                  </motion.div>
+                {!isCheckedIn ? (
+                  <FaceVerification onVerificationComplete={handleFaceVerification} />
+                ) : (
+                  <div className="text-center">
+                    <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-2" />
+                    <p className="text-lg font-medium text-gray-800">Successfully Checked In</p>
+                    <p className="text-sm text-gray-500">Face verification completed</p>
+                  </div>
                 )}
               </CardContent>
             </Card>
@@ -590,7 +564,7 @@ const StudentDashboard = () => {
                                 Your location will be verified to ensure you are within 50 meters of the class.
                               </p>
                               <Button 
-                                onClick={handleFaceVerification} 
+                                onClick={handleFaceVerificationLegacy} 
                                 className="w-full relative overflow-hidden shadow-md bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600"
                                 disabled={faceVerified || !qrScanned}
                                 variant={faceVerified ? "outline" : "default"}

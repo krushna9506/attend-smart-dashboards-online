@@ -9,6 +9,99 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      classes: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          room: string | null
+          teacher_id: string
+          time: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          room?: string | null
+          teacher_id: string
+          time?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          room?: string | null
+          teacher_id?: string
+          time?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      face_attendance: {
+        Row: {
+          class_id: string
+          created_at: string
+          device_info: string | null
+          face_confidence: number | null
+          id: string
+          location: string | null
+          updated_at: string
+          user_id: string
+          verified_at: string
+        }
+        Insert: {
+          class_id: string
+          created_at?: string
+          device_info?: string | null
+          face_confidence?: number | null
+          id?: string
+          location?: string | null
+          updated_at?: string
+          user_id: string
+          verified_at?: string
+        }
+        Update: {
+          class_id?: string
+          created_at?: string
+          device_info?: string | null
+          face_confidence?: number | null
+          id?: string
+          location?: string | null
+          updated_at?: string
+          user_id?: string
+          verified_at?: string
+        }
+        Relationships: []
+      }
+      face_data: {
+        Row: {
+          created_at: string
+          face_encoding: Json | null
+          id: string
+          is_current: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          face_encoding?: Json | null
+          id?: string
+          is_current?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          face_encoding?: Json | null
+          id?: string
+          is_current?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       mood_entries: {
         Row: {
           created_at: string
