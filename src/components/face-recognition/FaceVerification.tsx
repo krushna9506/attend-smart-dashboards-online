@@ -85,8 +85,28 @@ export const FaceVerification = ({ onVerificationComplete }: { onVerificationCom
         return;
       }
 
-      // Compare face descriptors
-      const storedDescriptor = new Float32Array(faceData.face_encoding.split(',').map(Number));
+      // Parse the face encoding based on type
+      let storedDescriptor: Float32Array;
+      
+      if (typeof faceData.face_encoding === 'string') {
+        // If it's stored as a string
+        storedDescriptor = new Float32Array(faceData.face_encoding.split(',').map(Number));
+      } else if (Array.isArray(faceData.face_encoding)) {
+        // If it's stored as an array
+        storedDescriptor = new Float32Array(faceData.face_encoding);
+      } else if (typeof faceData.face_encoding === 'object' && faceData.face_encoding !== null) {
+        // If it's stored as an object with numeric indices (JSON representation of array)
+        const values = Object.values(faceData.face_encoding);
+        storedDescriptor = new Float32Array(values);
+      } else {
+        toast({
+          title: "Error",
+          description: "Invalid face data format",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const distance = faceapi.euclideanDistance(fullFaceDescription.descriptor, storedDescriptor);
 
       if (distance < 0.6) { // Threshold for face match
@@ -164,3 +184,4 @@ export const FaceVerification = ({ onVerificationComplete }: { onVerificationCom
     </Card>
   );
 };
+
